@@ -18,17 +18,14 @@ public class CreateOrderTest {
     private OrderClient orderClient;
     int track;
 
-
     public CreateOrderTest(String[] color) {
         this.color = color;
     }
-
     @Before
     public void before() {
         orderClient = new OrderClient();
     }
-
-    @Parameterized.Parameters
+    @Parameterized.Parameters(name = "Тестовые данные: {0} {1}")
     public static Object[][] getColour() {
         return new Object[][]{
                 {new String[]{"GRAY"}},
@@ -37,8 +34,6 @@ public class CreateOrderTest {
                 {new String[]{}}
         };
     }
-
-
     @Test
     @DisplayName("Создание заказа со всеми вариациями выбора цвета")
     public void CreateOrderWithChoiceColors() {
@@ -50,8 +45,6 @@ public class CreateOrderTest {
                 .body("track", is(notNullValue()));
 
     }
-
-
     @After
     public void cleanUp() {
         orderClient.deleteOrder(track);

@@ -9,8 +9,7 @@ public class AuthCourierTest {
     private Courier courier;
     private CourierClient courierClient = new CourierClient();
     private AuthMetods authMetods = new AuthMetods();
-    int id;
-
+    private int id;
 
     @Test
     @DisplayName("Успешная авторизация со всеми полями")
@@ -21,7 +20,6 @@ public class AuthCourierTest {
         id = response.extract().path("id");
         authMetods.authIsDone(response);
     }
-
     @Test
     @DisplayName("Попытка авторизации без пароля")
     public void authWithoutPasswordImpossible() {
@@ -30,7 +28,6 @@ public class AuthCourierTest {
         ValidatableResponse response = courierClient.login(CourierCredentials.from(courier));
         authMetods.authFail(response);
     }
-
     @Test
     @DisplayName("Попытка авторизации без логина")
     public void authWithoutLoginImpossible() {
@@ -39,7 +36,6 @@ public class AuthCourierTest {
         ValidatableResponse response = courierClient.login(CourierCredentials.from(courier));
         authMetods.authFail(response);
     }
-
     @Test
     @DisplayName("Попытка входа под несуществующим пользователем")
     public void authWithNonExistentUserImpossible() {
@@ -48,7 +44,6 @@ public class AuthCourierTest {
         ValidatableResponse response = courierClient.login(CourierCredentials.from(courier));
         authMetods.authWithNonExistentUserFail(response);
     }
-
     @After
     public void cleanUp() {
         if (id != 0) {

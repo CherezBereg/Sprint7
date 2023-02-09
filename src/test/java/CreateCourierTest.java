@@ -2,6 +2,7 @@ import courier.Courier;
 import courier.CourierClient;
 import courier.CourierCredentials;
 import courier.CourierGenerator;
+import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
@@ -19,33 +20,28 @@ public class CreateCourierTest {
     private Courier courier;
     private CourierClient courierClient;
 
-    // Ассерты успешного создания курьера
+    @Step("Ассерты успешного создания курьера")
     public void creationCourierCompleted(ValidatableResponse response) {
         response.assertThat()
                 .statusCode(SC_CREATED)
                 .body("ok", is(true));
     }
-
-    // Ассерты ошибки создания курьера из-за недозаполненных параметров
+    @Step("Ассерты ошибки создания курьера из-за недозаполненных параметров")
     public void creationCourierFailed(ValidatableResponse response) {
         response.assertThat()
                 .statusCode(SC_BAD_REQUEST)
                 .body("message", equalTo("Недостаточно данных для создания учетной записи"));
     }
-
-    // Ассерты ошибки создания курьера из-за дублирования логина
+    @Step("Ассерты ошибки создания курьера из-за дублирования логина")
     public void recurringLogin(ValidatableResponse response) {
         response.assertThat()
                 .statusCode(SC_CONFLICT)
                 .body("message", equalTo("Этот логин уже используется"));
     }
-
     @Before
     public void setUp() {
         courierClient = new CourierClient();
     }
-
-
     @Test
     @DisplayName("Создание курьера с заполнением всех полей")
     public void courierCanBeCreated() {
@@ -55,7 +51,6 @@ public class CreateCourierTest {
         id = loginResponse.extract().path("id");
         creationCourierCompleted(response);
     }
-
     @Test
     @DisplayName("Создание курьера без параметра firstName")
     public void courierWithoutFirstNameCanBeCreated() {
@@ -65,7 +60,6 @@ public class CreateCourierTest {
         id = loginResponse.extract().path("id");
         creationCourierCompleted(response);
     }
-
     @Test
     @DisplayName("Создание курьера без пароля")
     public void courierWithoutPasswordCanNotBeCreated() {
@@ -73,7 +67,6 @@ public class CreateCourierTest {
         ValidatableResponse response = courierClient.createCourier(courier);
         creationCourierFailed(response);
     }
-
     @Test
     @DisplayName("Создание курьера без логина")
     public void courierWithoutLoginCanNotBeCreated() {
@@ -81,7 +74,6 @@ public class CreateCourierTest {
         ValidatableResponse response = courierClient.createCourier(courier);
         creationCourierFailed(response);
     }
-
     @Test
     @DisplayName("Создание двух одинаковых курьеров")
     public void cannotBeCreatedTwoSameCouriers() {
@@ -92,7 +84,6 @@ public class CreateCourierTest {
         id = loginResponse.extract().path("id");
         recurringLogin(response);
     }
-
 
     @After
     public void cleanUp() {

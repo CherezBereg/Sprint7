@@ -1,5 +1,6 @@
 package order;
 
+import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 
@@ -8,7 +9,7 @@ import static io.restassured.RestAssured.given;
 public class OrderClient {
     public static final String BASE_URL = "http://qa-scooter.praktikum-services.ru";
 
-    // Создание нового заказа
+    @Step("Создание нового заказа")
     public static ValidatableResponse createOrder(Order order) {
         return given().log().all()
                 .contentType(ContentType.JSON)
@@ -18,7 +19,7 @@ public class OrderClient {
                 .post("/api/v1/orders")
                 .then();
     }
-    // Получаем список заказов
+    @Step("Получаем список заказов")
     public ValidatableResponse orderList() {
         return given().log().all()
                 .contentType(ContentType.JSON)
@@ -27,8 +28,7 @@ public class OrderClient {
                 .get("/api/v1/orders")
                 .then();
     }
-
-    // Удаление тестового заказа
+    @Step("Удаляем созданный заказ")
     public ValidatableResponse deleteOrder(int track) {
         return  given().log().all()
                 .contentType(ContentType.JSON)
