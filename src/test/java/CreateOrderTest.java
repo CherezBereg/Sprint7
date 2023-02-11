@@ -36,7 +36,7 @@ public class CreateOrderTest {
     }
     @Test
     @DisplayName("Создание заказа со всеми вариациями выбора цвета")
-    public void CreateOrderWithChoiceColors() {
+    public void createOrderWithChoiceColors() {
         Order order = new Order(color);
         ValidatableResponse response = orderClient.createOrder(order);
         track = response.extract().path("track");
